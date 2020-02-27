@@ -1,0 +1,27 @@
+Implemented NEODatabase and updated models.py
+
+#######  database.py  #######
+Implemented NEODatabase.
+
+Class attributes:
+    - filename (str): name of the file
+    - db (dict): database
+
+Functions:
+    - load_data: loads the data from a CSV file
+      - keep a set of names added to the database
+      - for all rows in the CSV
+        - if the name has already been added:
+          - create the new Orbit and add it to the
+            orbits list of the NEO
+        - otherwise:
+          - create the new NEO, create the new Orbit
+            and add them both to the database.
+
+
+#######  models.py  #######
+
+Updated models.py
+
+- Changed print_orbits to print a list, where each element is the __str__ output of its orbit.
+- Changed the print statements in the printing functions for return statements.

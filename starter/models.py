@@ -18,10 +18,10 @@ class NearEarthObject(object):
         :param kwargs:    dict of attributes about a given Near Earth Object,
         only a subset of attributes used
         """
-        self.neo_id = kwargs['id']
-        self.neo_name = kwargs['name']
-        self.orbits = kwargs['orbits']
-        self.orbit_dates = kwargs['orbit_dates']
+        self.neo_id = kwargs['neo_id']
+        self.neo_name = kwargs['neo_name']
+        self.orbits = [OrbitPath(**kwargs), ]
+        self.orbit_dates = [kwargs['orbit_date'], ]
         self.magnitude = kwargs['magnitude']
         self.diam_min = kwargs['diam_min']
         self.diam_max = kwargs['diam_max']
@@ -38,21 +38,21 @@ class NearEarthObject(object):
         self.orbit_dates.append(orbit.orbit_date)
 
     def print_neo_id(self):
-        print(self.neo_id)
+        return(self.neo_id)
 
     def print_neo_name(self):
-        print(self.neo_name)
+        return(self.neo_name)
 
     def print_orbits(self):
-        print(self.orbits)
+        return([orbit.__str__() for orbit in self.orbits])
 
     def print_orbit_dates(self):
-        print(self.orbit_dates)
+        return(self.orbit_dates)
 
-    def __repr__():
+    def __repr__(self):
         return {'name': self.neo_name, 'id': self.neo_id}
 
-    def __str__():
+    def __str__(self):
         return f'NEO: name = {self.neo_name}, id = {self.neo_id}'
 
 
@@ -70,7 +70,7 @@ class OrbitPath(object):
         :param kwargs:    dict of attributes about a given orbit,
         only a subset of attributes used
         """
-        self.neo_name = kwargs['name']
+        self.neo_name = kwargs['neo_name']
         self.orbit_date = kwargs['orbit_date']
         self.miss = kwargs['miss']
 
@@ -78,10 +78,10 @@ class OrbitPath(object):
         print(self.neo_name)
 
     def print_miss(self):
-        print(self.miss)
+        return(self.miss)
 
     def print_orbit_date(self):
-        print(self.orbit_date)
+        return(self.orbit_date)
 
     def __repr__(self):
         return {'name': self.neo_name, 'date': self.orbit_date}

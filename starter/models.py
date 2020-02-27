@@ -6,6 +6,10 @@ class NearEarthObject(object):
     :param name: name of the object (str)
     :param orbits: list of orbits (list)
     :param orbit_dates: list of orbit dates (list)
+    :param magnitude: magnitude of object (float)
+    :param dim_min: minimum diamater in km (float)
+    :param dim_max: maximum diameter im km (float)
+    :param hazard: whether it is potentially hazardous (bool)
     """
 
     def __init__(self, **kwargs):
@@ -18,6 +22,10 @@ class NearEarthObject(object):
         self.neo_name = kwargs['name']
         self.orbits = kwargs['orbits']
         self.orbit_dates = kwargs['orbit_dates']
+        self.magnitude = kwargs['magnitude']
+        self.diam_min = kwargs['diam_min']
+        self.diam_max = kwargs['diam_max']
+        self.hazard = kwargs['hazard']
 
     def update_orbits(self, orbit):
         """
@@ -28,6 +36,24 @@ class NearEarthObject(object):
         """
         self.orbits.append(orbit)
         self.orbit_dates.append(orbit.orbit_date)
+
+    def print_neo_id(self):
+        print(self.neo_id)
+
+    def print_neo_name(self):
+        print(self.neo_name)
+
+    def print_orbits(self):
+        print(self.orbits)
+
+    def print_orbit_dates(self):
+        print(self.orbit_dates)
+
+    def __repr__():
+        return {'name': self.neo_name, 'id': self.neo_id}
+
+    def __str__():
+        return f'NEO: name = {self.neo_name}, id = {self.neo_id}'
 
 
 class OrbitPath(object):
@@ -47,3 +73,18 @@ class OrbitPath(object):
         self.neo_name = kwargs['name']
         self.orbit_date = kwargs['orbit_date']
         self.miss = kwargs['miss']
+
+    def print_neo_name(self):
+        print(self.neo_name)
+
+    def print_miss(self):
+        print(self.miss)
+
+    def print_orbit_date(self):
+        print(self.orbit_date)
+
+    def __repr__(self):
+        return {'name': self.neo_name, 'date': self.orbit_date}
+
+    def __str__(self):
+        return f'Orbit for {self.neo_name}. {self.orbit_date}'

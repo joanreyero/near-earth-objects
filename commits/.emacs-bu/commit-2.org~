@@ -1,0 +1,24 @@
+#+OPTIONS: toc:nil        (no default TOC at all)
+
+Redefined models.py
+
+* Models
+Defined two models:
+- NearEarthObject and
+- OrbitalPath
+
+** NearEarthObject
+Attributes:
+- ~id~ :: Identifier
+- ~name~ :: name of the object (str)
+- ~orbits~ :: list of orbits (list)
+- ~orbit_dates~ :: list of orbit dates (list)
+
+Functions:
+- ~update_orbits~ :: ads an orbit path information to a NEO list of Orbits.
+
+** OrbitaPath
+Attributes:
+- ~name~ :: name of the object the orbit corresponds to (str)
+- ~orbit_date~ :: close approach date (datetime)
+- ~miss~ :: miss distance in kilometers (float)

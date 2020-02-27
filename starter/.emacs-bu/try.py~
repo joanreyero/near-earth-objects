@@ -1,4 +1,0 @@
-from database import NEODatabase as NEO
-
-db = NEO('data/neo_data.csv')
-db.load_data()

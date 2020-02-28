@@ -5,7 +5,7 @@ from exceptions import UnsupportedFeature
 from models import NearEarthObject, OrbitPath
 
 
-class DateSearch(Enum):
+class DateSearchType(Enum):
     """
     Enum representing supported date search on Near Earth Objects.
     """
@@ -17,34 +17,53 @@ class DateSearch(Enum):
         """
         :return: list of string representations of DateSearchType enums
         """
-        return list(map(lambda output: output.value, DateSearch))
+        return list(map(lambda output: output.value, DateSearchType))
 
 
 class Query(object):
     """
-    Object representing the desired search query operation to build. The Query uses the Selectors
-    to structure the query information into a format the NEOSearcher can use for date search.
+    Object representing the desired search query operation to build.
+    The Query uses the Selectors to structure the query information
+    into a format the NEOSearcher can use for date search.
     """
 
-    Selectors = namedtuple('Selectors', ['date_search', 'number', 'filters', 'return_object'])
+    Selectors = namedtuple('Selectors', ['date_search', 'number',
+                                         'filters', 'return_object'])
     DateSearch = namedtuple('DateSearch', ['type', 'values'])
     ReturnObjects = {'NEO': NearEarthObject, 'Path': OrbitPath}
 
     def __init__(self, **kwargs):
         """
-        :param kwargs: dict of search query parameters to determine which SearchOperation query to use
+        :param kwargs: dict of search query parameters to determine
+        which SearchOperation query to use
         """
-        # TODO: What instance variables will be useful for storing on the Query object?
+        # To check which parameters are given
+        flags = kwargs.keys()
+
+        if 'start_date' and 'end_date' in flags:
+            self.date_search = Query.DateSearch(type=DateSearchType.between,
+                                                values=[kwargs['start_date'],
+                                                        kwargs['end_date']])
+        elif 'date' in flags:
+            self.date_search = Query.DateSearch(type=DateSearchType.equals,
+                                                values=kwargs['date'])
+
+        self.return_object = Query.ReturnObjects[kwargs['return_object']]
+        self.number = kwargs['number']
+
 
     def build_query(self):
         """
-        Transforms the provided query options, set upon initialization, into a set of Selectors that the NEOSearcher
-        can use to perform the appropriate search functionality
+        Transforms the provided query options, set upon initialization,
+        into a set of Selectors that the NEOSearcher can use to perform
+        the appropriate search functionality
 
-        :return: QueryBuild.Selectors namedtuple that translates the dict of query options into a SearchOperation
+        :return: QueryBuild.Selectors namedtuple that translates the dict
+        of query options into a SearchOperation
         """
-
-        # TODO: Translate the query parameters into a QueryBuild.Selectors object
+        return Query.Selectors(date_search=self.date_search,
+                               return_object=self.return_object,
+                               number=self.number, filters=[])
 
 
 class Filter(object):

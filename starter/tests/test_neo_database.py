@@ -68,7 +68,7 @@ class TestNEOSearchUseCases(unittest.TestCase):
 
         # Confirm 4 results and 4 unique results
         self.assertEqual(len(results), 4)
-        neo_ids = list(filter(lambda neo: neo.diameter_min_km > 0.042, results))
+        neo_ids = list(filter(lambda neo: neo.diam_min > 0.042, results))
         neo_ids = set(map(lambda neo: neo.name, results))
         self.assertEqual(len(neo_ids), 4)
 
@@ -82,8 +82,8 @@ class TestNEOSearchUseCases(unittest.TestCase):
 
         # Confirm 10 results and 10 unique results
         self.assertEqual(len(results), 10)
-        neo_ids = list(filter(lambda neo: neo.diameter_min_km > 0.042, results))
-        diameter = set(map(lambda neo: neo.diameter_min_km, results))
+        neo_ids = list(filter(lambda neo: neo.diam_min > 0.042, results))
+        diameter = set(map(lambda neo: neo.diam_min, results))
         neo_ids = set(map(lambda neo: neo.name, results))
         self.assertEqual(len(neo_ids), 10)
 
@@ -97,7 +97,7 @@ class TestNEOSearchUseCases(unittest.TestCase):
         # Confirm 0 results and 0 unique results
         self.assertEqual(len(results), 0)
         neo_ids = list(filter(
-            lambda neo: neo.diameter_min_km > 0.042 and neo.is_potentially_hazardous_asteroid, results
+            lambda neo: neo.diam_min > 0.042 and neo.hazard, results
         ))
         neo_ids = set(map(lambda neo: neo.name, results))
         self.assertEqual(len(neo_ids), 0)
@@ -113,7 +113,7 @@ class TestNEOSearchUseCases(unittest.TestCase):
         # Confirm 10 results and 10 unique results
         self.assertEqual(len(results), 10)
         neo_ids = list(filter(
-            lambda neo: neo.diameter_min_km > 0.042 and neo.is_potentially_hazardous_asteroid, results)
+            lambda neo: neo.diam_min > 0.042 and neo.hazard, results)
         )
         neo_ids = set(map(lambda neo: neo.name, results))
         self.assertEqual(len(neo_ids), 10)
@@ -129,7 +129,7 @@ class TestNEOSearchUseCases(unittest.TestCase):
         # Confirm 0 results and 0 unique results
         self.assertEqual(len(results), 0)
         neo_ids = list(filter(
-            lambda neo: neo.diameter_min_km > 0.042 and neo.is_potentially_hazardous_asteroid, results
+            lambda neo: neo.diam_min > 0.042 and neo.hazard, results
         ))
         neo_ids = set(map(lambda neo: neo.name, results))
         self.assertEqual(len(neo_ids), 0)
@@ -148,7 +148,7 @@ class TestNEOSearchUseCases(unittest.TestCase):
 
         # Filter NEOs by NEO attributes
         neo_ids = list(filter(
-            lambda neo: neo.diameter_min_km > 0.042 and neo.is_potentially_hazardous_asteroid, results)
+            lambda neo: neo.diam_min > 0.042 and neo.hazard, results)
         )
 
         # Filter to NEO Orbit Paths with Matching Distance

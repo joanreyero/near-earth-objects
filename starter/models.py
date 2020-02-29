@@ -22,7 +22,6 @@ class NearEarthObject(object):
         self.name = kwargs['name']
         self.orbits = [OrbitPath(**kwargs), ]
         self.orbit_dates = [kwargs['orbit_date'], ]
-        self.magnitude = kwargs['magnitude']
         self.diam_min = kwargs['diam_min']
         self.diam_max = kwargs['diam_max']
         self.hazard = kwargs['hazard']

@@ -158,9 +158,9 @@ class TestNEOSearchUseCases(unittest.TestCase):
         unique_orbits = set()
         filtered_orbits = []
         for orbit in all_orbits:
-            date_name = f'{orbit.close_approach_date}.{orbit.neo_name}'
+            date_name = f'{orbit.orbit_date}.{orbit.name}'
             if date_name not in unique_orbits:
-                if orbit.miss_distance_kilometers > 234989.0:
+                if orbit.miss > 234989.0:
                     filtered_orbits.append(orbit)
 
         # Grab the requested number

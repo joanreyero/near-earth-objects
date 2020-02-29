@@ -83,7 +83,8 @@ class Filter(object):
     """
     Options = {
         'diameter': ('NearEarthObject', 'diam_min'),
-        'is_hazardous': ('NearEarthObject', 'hazard')
+        'is_hazardous': ('NearEarthObject', 'hazard'),
+        'distance': ('OrbitPath', 'miss')
     }
 
     Operators = {

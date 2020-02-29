@@ -40,12 +40,15 @@ class Query(object):
         """
         # To check which parameters are given
         flags = kwargs.keys()
+        print(flags)
 
         if 'start_date' and 'end_date' in flags:
+            print('between')
             self.date_search = Query.DateSearch(type=DateSearchType.between,
                                                 values=[kwargs['start_date'],
                                                         kwargs['end_date']])
         elif 'date' in flags:
+            print('equal')
             self.date_search = Query.DateSearch(type=DateSearchType.equals,
                                                 values=[kwargs['date']])
 
@@ -139,12 +142,14 @@ class NEOSearcher(object):
         :return: Dataset of NearEarthObjects or OrbitalPaths
         """
         ds = {}
+        found = 0
         # While we have not found yet enough objects
         while found <= query.number:
-            for neo_name, neo in self.db.items():
+            for neo_name, neo in self.db.db.items():
                 # TODO write date_search
-                if NeoSearcher.date_match(neo, query.date_search):
-                    ds[neo_name] = NeoSearcher.get_object(neo, date,
+                print(query)
+                if NEOSearcher.date_match(neo, query.date_search):
+                    ds[neo_name] = NEOSearcher.get_object(neo, date,
                                                           query.return_object)
                     found += 1
         return ds
@@ -156,18 +161,21 @@ class NEOSearcher(object):
     @staticmethod
     def date_match(neo, date_search):
         str_format = '%Y-%m-%d'
-        dates = map(lambda d: datetime.strptime(d, str_format),
-                    date_search.values)
+        print(date_search.values)
+        dates = list(map(lambda d: datetime.strptime(d, str_format),
+                    date_search.values))
 
         if date_search.type == DateSearchType.between:
             # Check whether any date of the object is bwtween
             # the desired dates.
             for date in neo.orbit_dates:
-                return date if date >= dates[0] and date <= dates[1]
+                if date >= dates[0] and date <= dates[1]:
+                    return date
         else:
             # Check whether any date of the object is the desired date
             for date in neo.orbit_dates:
-                return date if date == dates[0]
+                if date == dates[0]:
+                    return date
         return False
 
     @staticmethod

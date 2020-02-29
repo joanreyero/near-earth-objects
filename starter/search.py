@@ -1,6 +1,6 @@
 from collections import namedtuple
 from enum import Enum
-
+import operator as op
 from exceptions import UnsupportedFeature
 from models import NearEarthObject, OrbitPath
 from datetime import datetime
@@ -38,10 +38,15 @@ class Query(object):
         :param kwargs: dict of search query parameters to determine
         which SearchOperation query to use
         """
-        if kwargs['start_date'] and kwargs['end_date']:
-            self.date_search = Query.DateSearch(type=DateSearchType.between,
-                                                values=[kwargs['start_date'],
-                                                        kwargs['end_date']])
+        keys = kwargs.keys()
+        # If it is passed from the unit tests, not all keys are in the dict
+        if 'start_date' and 'end_date' in keys:
+            # but if passed from the command line, all keys are in dict
+            # but some have value None.
+            if kwargs['start_date'] and kwargs['end_date']:
+                self.date_search = Query.DateSearch(type=DateSearchType.between,
+                                                    values=[kwargs['start_date'],
+                                                            kwargs['end_date']])
         elif kwargs['date']:
             self.date_search = Query.DateSearch(type=DateSearchType.equals,
                                                 values=[kwargs['date']])
@@ -70,11 +75,15 @@ class Filter(object):
     Each filter is one of Filter.Operators provided with a field to filter on a value.
     """
     Options = {
-        # TODO: Create a dict of filter name to the NearEarthObject or OrbitalPath property
+        'is_hazardous': 'hazard',
+        'diameter': 'diam_min',
+        'distance': 'miss'
     }
 
     Operators = {
-        # TODO: Create a dict of operator symbol to an Operators method, see README Task 3 for hint
+        '>=': op.ge,
+        '<=': op.le,
+        '=': op.eq
     }
 
     def __init__(self, field, object, operation, value):
@@ -97,6 +106,7 @@ class Filter(object):
         :param input: list in format ["filter_option:operation:value_of_option", ...]
         :return: defaultdict with key of NearEarthObject or OrbitPath and value of empty list or list of Filters
         """
+        filter_list = filter_options.split(':')
 
         # TODO: return a defaultdict of filters with key of NearEarthObject or OrbitPath and value of empty list or list of Filters
 
@@ -135,16 +145,16 @@ class NEOSearcher(object):
         :param query: Query.Selectors object with query information
         :return: Dataset of NearEarthObjects or OrbitalPaths
         """
-        ds = {}
+        ds = []
         found = 0
         # While we have not found yet enough objects
-        for neo_name, neo in self.db.db.items():
+        for name, neo in self.db.db.items():
             if found >= query.number: break
             date_match = NEOSearcher.date_match(neo, query.date_search)
             if date_match:
-                ds[neo_name] = NEOSearcher.get_object(neo, date_match,
-                                                      query.return_object)
-                print(neo.orbit_dates)
+                ds.append(NEOSearcher.get_object(neo, date_match,
+                                                 query.return_object))
+#                print(neo.orbit_dates)
                 found += 1
         return ds
         # TODO: This is a generic method that will need to understand, using DateSearch, how to implement search
@@ -172,7 +182,7 @@ class NEOSearcher(object):
 
     @staticmethod
     def get_object(neo, date, return_object):
-        if neo is return_object:
+        if isinstance(neo, return_object):
             return neo
         else:
             for orbit in neo.orbits:

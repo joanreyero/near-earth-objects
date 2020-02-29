@@ -54,7 +54,6 @@ class TestNEOSearchUseCases(unittest.TestCase):
             number=10, start_date=self.start_date, end_date=self.end_date, return_object='NEO'
         ).build_query()
         results = NEOSearcher(self.db).get_objects(query_selectors)
-
         # Confirm 10 results and 10 unique results
         self.assertEqual(len(results), 10)
         neo_ids = set(map(lambda neo: neo.name, results))

@@ -48,10 +48,10 @@ class NEODatabase(object):
             neo_data = csv.reader(csvfile, delimiter=',')
             next(neo_data, None)
             for row in neo_data:
-                neo_name = row[2]  # Extract name to check membership.
+                name = row[2]  # Extract name to check membership.
                 # Get the relevant elements
                 args = {'neo_id': row[0],
-                          'neo_name': neo_name,
+                          'name': name,
                           'magnitude': row[4],
                           'diam_min': row[5],
                           'diam_max': row[6],
@@ -60,17 +60,17 @@ class NEODatabase(object):
                           'miss': row[21]}
 
                 # If this object is already in the DB
-                if neo_name in checked_names:
+                if name in checked_names:
                     # Make a new Orbit Object
                     orbit = OrbitPath(**args)
                     # and update the orbits with the Object.
-                    db[neo_name].update_orbits(orbit)
+                    db[name].update_orbits(orbit)
 
                 else:
                     # Add the name to the set
-                    checked_names.add(neo_name)
+                    checked_names.add(name)
                     # and create the NEO
-                    db[neo_name] = NearEarthObject(**args)
+                    db[name] = NearEarthObject(**args)
 
         self.db = db
         return None

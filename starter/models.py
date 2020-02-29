@@ -19,7 +19,7 @@ class NearEarthObject(object):
         only a subset of attributes used
         """
         self.neo_id = kwargs['neo_id']
-        self.neo_name = kwargs['neo_name']
+        self.name = kwargs['name']
         self.orbits = [OrbitPath(**kwargs), ]
         self.orbit_dates = [kwargs['orbit_date'], ]
         self.magnitude = kwargs['magnitude']
@@ -40,8 +40,8 @@ class NearEarthObject(object):
     def print_neo_id(self):
         return(self.neo_id)
 
-    def print_neo_name(self):
-        return(self.neo_name)
+    def print_name(self):
+        return(self.name)
 
     def print_orbits(self):
         return([orbit.__str__() for orbit in self.orbits])
@@ -49,11 +49,11 @@ class NearEarthObject(object):
     def print_orbit_dates(self):
         return(self.orbit_dates)
 
-    def __repr__(self):
-        return {'name': self.neo_name, 'id': self.neo_id}
+    # def __repr__(self):
+    #     return {'name': self.name, 'id': self.neo_id}
 
-    def __str__(self):
-        return f'NEO: name = {self.neo_name}, id = {self.neo_id}'
+    # def __str__(self):
+    #     return f'NEO: name = {self.name}, id = {self.neo_id}'
 
 
 class OrbitPath(object):
@@ -70,12 +70,12 @@ class OrbitPath(object):
         :param kwargs:    dict of attributes about a given orbit,
         only a subset of attributes used
         """
-        self.neo_name = kwargs['neo_name']
+        self.name = kwargs['name']
         self.orbit_date = kwargs['orbit_date']
         self.miss = kwargs['miss']
 
-    def print_neo_name(self):
-        print(self.neo_name)
+    def print_name(self):
+        print(self.name)
 
     def print_miss(self):
         return(self.miss)
@@ -84,7 +84,7 @@ class OrbitPath(object):
         return(self.orbit_date)
 
     def __repr__(self):
-        return {'name': self.neo_name, 'date': self.orbit_date}
+        return {'name': self.name, 'date': self.orbit_date}
 
     def __str__(self):
-        return f'Orbit for {self.neo_name}. {self.orbit_date}'
+        return f'Orbit for {self.name}. {self.orbit_date}'

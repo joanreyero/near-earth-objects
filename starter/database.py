@@ -1,5 +1,6 @@
 import csv
 from models import OrbitPath, NearEarthObject
+from datetime import datetime
 
 
 class NEODatabase(object):
@@ -45,7 +46,7 @@ class NEODatabase(object):
         with open(filename, newline='') as csvfile:
             # Read CSV
             neo_data = csv.reader(csvfile, delimiter=',')
-
+            next(neo_data, None)
             for row in neo_data:
                 neo_name = row[2]  # Extract name to check membership.
                 # Get the relevant elements
@@ -55,7 +56,7 @@ class NEODatabase(object):
                           'diam_min': row[5],
                           'diam_max': row[6],
                           'hazard': row[13],
-                          'orbit_date': row[17],
+                          'orbit_date': datetime.strptime(row[17], '%Y-%m-%d'),
                           'miss': row[21]}
 
                 # If this object is already in the DB

@@ -38,17 +38,11 @@ class Query(object):
         :param kwargs: dict of search query parameters to determine
         which SearchOperation query to use
         """
-        # To check which parameters are given
-        flags = kwargs.keys()
-        print(flags)
-
-        if 'start_date' and 'end_date' in flags:
-            print('between')
+        if kwargs['start_date'] and kwargs['end_date']:
             self.date_search = Query.DateSearch(type=DateSearchType.between,
                                                 values=[kwargs['start_date'],
                                                         kwargs['end_date']])
-        elif 'date' in flags:
-            print('equal')
+        elif kwargs['date']:
             self.date_search = Query.DateSearch(type=DateSearchType.equals,
                                                 values=[kwargs['date']])
 
@@ -144,14 +138,14 @@ class NEOSearcher(object):
         ds = {}
         found = 0
         # While we have not found yet enough objects
-        while found <= query.number:
-            for neo_name, neo in self.db.db.items():
-                # TODO write date_search
-                print(query)
-                if NEOSearcher.date_match(neo, query.date_search):
-                    ds[neo_name] = NEOSearcher.get_object(neo, date,
-                                                          query.return_object)
-                    found += 1
+        for neo_name, neo in self.db.db.items():
+            if found >= query.number: break
+            date_match = NEOSearcher.date_match(neo, query.date_search)
+            if date_match:
+                ds[neo_name] = NEOSearcher.get_object(neo, date_match,
+                                                      query.return_object)
+                print(neo.orbit_dates)
+                found += 1
         return ds
         # TODO: This is a generic method that will need to understand, using DateSearch, how to implement search
         # TODO: Write instance methods that get_objects can use to implement the two types of DateSearch your project
@@ -161,10 +155,8 @@ class NEOSearcher(object):
     @staticmethod
     def date_match(neo, date_search):
         str_format = '%Y-%m-%d'
-        print(date_search.values)
         dates = list(map(lambda d: datetime.strptime(d, str_format),
                     date_search.values))
-
         if date_search.type == DateSearchType.between:
             # Check whether any date of the object is bwtween
             # the desired dates.

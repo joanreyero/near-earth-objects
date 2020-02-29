@@ -24,3 +24,19 @@ That function is built assuming that the parameter-dict ~kwargs~ only has the ke
 In order to test this hypothesis, the value of ~flags~ in line 43 will be printed.
 [[./4.png]]
 The first line in the image shows that, indeed, all the possible flags are part of the ~kwargs~ dictionary. Therefore, the source of the bug has been found.
+
+* 10th Commit
+** Fixing the error
+In order to fix the bug, the ~if~ statement in line 41 was changed to see whether the values for ~start_date~ and ~end_date~ were ~None~. This solved the bug.
+
+** Second bug
+However, I noticed another bug after that one was solved. ~search~ was not finding any match between the dates, even when they were equal. The first step was to print the dates when doing the comparisson. With that, I realised that the dates coming from ~db~ were in a ~string~ format, rather than ~datetime~. Therefore, the bug could simply be solved by converting the string-date to a ~datetime~ before adding it to the database line 60 in ~database.py~
+
+When trying to format the datetime another error occurred. It did not process because it was also trying to add the CSV headers to the database. This was solved adding ~next(neo_data, None)~ to skip the header, in line 49 in ~database.py~.
+
+** Third bug
+The search was finding all occurrences of the NEOs in the delected date, instead of the /n/ first occurrences.
+This was solved by inspection.
+I realised ~while~ loop in line 147 in the 9th commit in ~search.py~ did not really have much effect, as the ~for~ loop just after went until completion.
+
+To solve this, the ~while~ loop was deleted. Instead, an ~if~ statement was added in line 142 in ~search.py~ to break the ~for~ loop when we have found the desired occurrences.

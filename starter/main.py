@@ -103,7 +103,6 @@ if __name__ == '__main__':
         filename = f'{PROJECT_ROOT}/data/neo_data.csv'
 
     db = NEODatabase(filename=filename)
-
     try:
         db.load_data()
     except FileNotFoundError as e:

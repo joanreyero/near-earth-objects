@@ -1,2 +1,4 @@
 try.*
 commit.*
+.emacs
+env

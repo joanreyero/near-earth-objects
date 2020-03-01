@@ -48,11 +48,11 @@ class NearEarthObject(object):
     def print_orbit_dates(self):
         return(self.orbit_dates)
 
-    # def __repr__(self):
-    #     return {'name': self.name, 'id': self.neo_id}
+    def __repr__(self):
+        return {'name': self.name, 'id': self.neo_id}
 
-    # def __str__(self):
-    #     return f'NEO: name = {self.name}, id = {self.neo_id}'
+    def __str__(self):
+        return f'NEO: name = {self.name}, id = {self.neo_id}'
 
 
 class OrbitPath(object):
@@ -83,7 +83,9 @@ class OrbitPath(object):
         return(self.orbit_date)
 
     def __repr__(self):
-        return {'name': self.name, 'date': self.orbit_date}
+        orbit = f'Orbit on {self.orbit_date.strftime("%Y-%m-%d")}. '
+        miss = f'Miss distance (km): {round(self.miss, 2)}'
+        return orbit + miss
 
     def __str__(self):
-        return f'Orbit for {self.name}. {self.orbit_date}'
+        return f'Orbit on {self.orbit_date}. Miss distance (km)): {self.miss}'

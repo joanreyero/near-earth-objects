@@ -51,12 +51,12 @@ class NEODatabase(object):
                 name = row[2]  # Extract name to check membership.
                 # Get the relevant elements
                 args = {'neo_id': row[0],
-                          'name': name,
-                          'diam_min': float(row[5]),
-                          'diam_max': float(row[6]),
-                          'hazard': row[13] == 'True',
-                          'orbit_date': datetime.strptime(row[17], '%Y-%m-%d'),
-                          'miss': float(row[21])}
+                        'name': name,
+                        'diam_min': float(row[5]),
+                        'diam_max': float(row[6]),
+                        'hazard': row[13] == 'True',
+                        'orbit_date': datetime.strptime(row[17], '%Y-%m-%d'),
+                        'miss': float(row[21])}
 
                 # If this object is already in the DB
                 if name in checked_names:

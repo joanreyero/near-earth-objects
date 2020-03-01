@@ -123,15 +123,15 @@ if __name__ == '__main__':
         sys.exit()
 
     # Output Results
-    try:
-        result = NEOWriter().write(
-            data=results,
-            format=args.output,
-        )
-    except Exception as e:
-        print(e)
-        print('Write unsuccessful')
-        sys.exit()
+    #try:
+    result = NEOWriter().write(
+        data=results,
+        format=args.output,
+    )
+    #except Exception as e:
+    #    print(e)
+    #    print('Write unsuccessful')
+    #    sys.exit()
 
     if result:
         print('Write successful.')

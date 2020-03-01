@@ -60,7 +60,6 @@ class Query(object):
         else:
             self.filters = []
 
-
     def build_query(self):
         """
         Transforms the provided query options, set upon initialization,
@@ -78,8 +77,10 @@ class Query(object):
 
 class Filter(object):
     """
-    Object representing optional filter options to be used in the date search for Near Earth Objects.
-    Each filter is one of Filter.Operators provided with a field to filter on a value.
+    Object representing optional filter options to be used in the date
+    search for Near Earth Objects.
+    Each filter is one of Filter.Operators provided with a field
+    to filter on a value.
     """
     Options = {
         'diameter': ('NearEarthObject', 'diam_min'),
@@ -130,8 +131,10 @@ class Filter(object):
         """
         Class function that transforms filter options raw input into filters
 
-        :param input: list in format ["filter_option:operation:value_of_option", ...]
-        :return: list with key of NearEarthObject or OrbitPath and value of empty list or list of Filters
+        :param input: list in format
+                      ["filter_option:operation:value_of_option", ...]
+        :return: list with key of NearEarthObject
+                 or OrbitPath and value of empty list or list of Filters
         """
         return [Filter._parse_filter(filter_str) for
                 filter_str in filter_options]
@@ -150,7 +153,7 @@ class Filter(object):
         # either int or bool
         try:
             value = float(self.value)
-        except:
+        except Exception:
             value = self.value == 'True'
 
         # Getting the operation to perform
@@ -168,25 +171,26 @@ class Filter(object):
 
 class NEOSearcher(object):
     """
-    Object with date search functionality on Near Earth Objects exposed by a generic
-    search interface get_objects, which, based on the query specifications, determines
-    how to perform the search.
+    Object with date search functionality on Near Earth Objects
+    exposed by a generic search interface get_objects, which, based on the
+    query specifications, determines how to perform the search.
     """
 
     def __init__(self, db):
         """
-        :param db: NEODatabase holding the NearEarthObject instances and their OrbitPath instances
+        :param db: NEODatabase holding the NearEarthObject instances
+        and their OrbitPath instances
         """
         self.db = db
-        # TODO: What kind of an instance variable can we use to connect DateSearch to how we do search?
 
     def get_objects(self, query):
         """
-        Generic search interface that, depending on the details in the QueryBuilder (query) calls the
-        appropriate instance search function, then applys any filters, with distance as the last filter.
+        Generic search interface that, depending on the details in the
+        QueryBuilder (query) calls the appropriate instance search function,
+        then appliess any filters, with distance as the last filter.
 
-        Once any filters provided are applied, return the number of requested objects in the query.return_object
-        specified.
+        Once any filters provided are applied, return the number of
+        requested objects in the query.return_object specified.
 
         :param query: Query.Selectors object with query information
         :return: Dataset of NearEarthObjects or OrbitalPaths
@@ -196,8 +200,8 @@ class NEOSearcher(object):
 
         # Get results of NEOs with required dates
         results = [neo for neo in self.db.db.values()
-                        if NEOSearcher._date_match(neo.orbit_dates,
-                                                  query.date_search)]
+                   if NEOSearcher._date_match(neo.orbit_dates,
+                                              query.date_search)]
         # Apply filters
         for filt in filters:
             results = filt.apply(results)
@@ -206,7 +210,6 @@ class NEOSearcher(object):
             return NEOSearcher._get_orbits(results, query.date_search)
 
         return results[:query.number]
-
 
     @staticmethod
     def _date_match(orbit_dates, date_search):
@@ -219,7 +222,7 @@ class NEOSearcher(object):
         # For between returns list of datetimes [start_date, end_date]
         # For equal simply [date]
         dates = list(map(lambda d: datetime.strptime(d, str_format),
-                    date_search.values))
+                         date_search.values))
         if date_search.type == DateSearchType.between:
             # Check whether any date of the object is bwtween
             # the desired dates.

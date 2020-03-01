@@ -1,5 +1,0 @@
-* Bug explanation and resolution
-
- - After implementing the first search requirment.
- - When ~python3 main.py display -n 10 --date 2020-01-01~ it gives the following error:
- [[1.png]]
